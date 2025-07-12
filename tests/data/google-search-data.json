@@ -1,0 +1,124 @@
+{
+  "searchTerms": {
+    "primary": "analista de datos",
+    "variations": [
+      "analista de datos empleos",
+      "analista de datos requisitos",
+      "analista de datos sueldo",
+      "curso analista de datos",
+      "analista de datos trabajo México",
+      "analista de datos certificación",
+      "analista de datos junior",
+      "analista de datos senior",
+      "analista de datos remoto",
+      "analista de datos python"
+    ],
+    "exact": [
+      "\"analista de datos\" empleo",
+      "\"analista de datos\" curso",
+      "\"analista de datos\" salario"
+    ],
+    "english": [
+      "data analyst",
+      "data analyst jobs",
+      "data analyst salary",
+      "data analyst skills",
+      "data analyst remote"
+    ]
+  },
+  "expectedKeywords": [
+    "analista",
+    "datos",
+    "data",
+    "analyst",
+    "análisis",
+    "information",
+    "información",
+    "estadística",
+    "statistics",
+    "python",
+    "sql",
+    "excel",
+    "tableau",
+    "power bi"
+  ],
+  "locations": {
+    "mexico": {
+      "terms": [
+        "analista de datos México",
+        "analista de datos CDMX",
+        "analista de datos Guadalajara",
+        "analista de datos Monterrey"
+      ],
+      "expectedKeywords": [
+        "méxico",
+        "mexico",
+        "cdmx",
+        "guadalajara",
+        "monterrey",
+        "mx"
+      ]
+    }
+  },
+  "jobPortals": [
+    "indeed",
+    "linkedin",
+    "occ",
+    "computrabajo",
+    "bumeran",
+    "glassdoor"
+  ],
+  "skills": [
+    "python",
+    "sql",
+    "excel",
+    "tableau",
+    "power bi",
+    "r",
+    "pandas",
+    "numpy",
+    "machine learning",
+    "estadística",
+    "visualización",
+    "dashboard"
+  ],
+  "companies": [
+    "google",
+    "microsoft",
+    "amazon",
+    "meta",
+    "netflix",
+    "uber",
+    "spotify",
+    "airbnb"
+  ],
+  "education": [
+    "curso",
+    "certificación",
+    "bootcamp",
+    "diplomado",
+    "maestría",
+    "licenciatura",
+    "universidad",
+    "coursera",
+    "udemy",
+    "platzi"
+  ],
+  "performance": {
+    "maxSearchTime": 10000,
+    "minResults": 5,
+    "maxRetries": 3,
+    "timeoutBetweenSearches": 2000
+  },
+  "browsers": [
+    "google-chrome",
+    "google-firefox",
+    "google-mobile"
+  ],
+  "reportSettings": {
+    "maxTitlesToShow": 10,
+    "maxLinksToShow": 5,
+    "includeMetrics": true,
+    "includeTimestamps": true
+  }
+}

@@ -1,0 +1,66 @@
+[
+  {
+    "id": 1,
+    "username": "admin",
+    "password": "admin123",
+    "email": "admin@paisaerp.com",
+    "role": "administrator",
+    "company": "Empresa Principal",
+    "active": true,
+    "permissions": ["all"],
+    "profile": {
+      "firstName": "Admin",
+      "lastName": "User",
+      "department": "IT",
+      "phone": "+573001234567"
+    }
+  },
+  {
+    "id": 2,
+    "username": "user1",
+    "password": "user123",
+    "email": "user1@paisaerp.com",
+    "role": "user",
+    "company": "Empresa Principal",
+    "active": true,
+    "permissions": ["read", "write"],
+    "profile": {
+      "firstName": "Usuario",
+      "lastName": "Uno",
+      "department": "Ventas",
+      "phone": "+573007654321"
+    }
+  },
+  {
+    "id": 3,
+    "username": "viewer",
+    "password": "viewer123",
+    "email": "viewer@paisaerp.com",
+    "role": "viewer",
+    "company": "Empresa Secundaria",
+    "active": true,
+    "permissions": ["read"],
+    "profile": {
+      "firstName": "Viewer",
+      "lastName": "User",
+      "department": "Contabilidad",
+      "phone": "+573001112222"
+    }
+  },
+  {
+    "id": 4,
+    "username": "inactive",
+    "password": "inactive123",
+    "email": "inactive@paisaerp.com",
+    "role": "user",
+    "company": "Empresa Principal",
+    "active": false,
+    "permissions": ["read"],
+    "profile": {
+      "firstName": "Inactive",
+      "lastName": "User",
+      "department": "Recursos Humanos",
+      "phone": "+573003334444"
+    }
+  }
+]

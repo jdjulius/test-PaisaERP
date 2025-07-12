@@ -1,0 +1,63 @@
+{
+  "name": "paisaerp-test-automation",
+  "version": "1.0.0",
+  "description": "Proyecto de automatización de pruebas para PaisaERP usando Playwright",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report",
+    "test:parallel": "playwright test --workers=4",
+    "test:chrome": "playwright test --project=chromium",
+    "test:firefox": "playwright test --project=firefox",
+    "test:safari": "playwright test --project=webkit",
+    "test:mobile": "playwright test --project=mobile",
+    "test:api": "playwright test --project=api-tests",
+    "test:dev": "NODE_ENV=development playwright test --headed",
+    "test:dev:debug": "NODE_ENV=development playwright test --debug",
+    "test:ci": "CI=true playwright test",
+    "test:ci:full": "CI=true FULL_CI=true playwright test",
+    "test:google": "TEST_TYPE=google playwright test",
+    "test:google:headed": "TEST_TYPE=google playwright test --headed",
+    "test:google:debug": "TEST_TYPE=google playwright test --debug",
+    "test:google:chrome": "TEST_TYPE=google playwright test --project=chromium",
+    "test:google:firefox": "TEST_TYPE=google playwright test --project=firefox",
+    "test:google:mobile": "TEST_TYPE=google playwright test --project=mobile",
+    "install:browsers": "playwright install",
+    "install:deps": "playwright install-deps",
+    "codegen": "playwright codegen",
+    "lint": "eslint tests/ --ext .ts,.js",
+    "lint:fix": "eslint tests/ --ext .ts,.js --fix",
+    "format": "prettier --write \"tests/**/*.{ts,js,json}\"",
+    "clean": "rimraf test-results coverage",
+    "start": "echo 'Servidor de desarrollo - implementar según ERP'"
+  },
+  "keywords": [
+    "playwright",
+    "automation",
+    "testing",
+    "erp",
+    "e2e",
+    "typescript"
+  ],
+  "author": "Equipo de QA",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "eslint": "^8.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "prettier": "^3.0.0",
+    "rimraf": "^5.0.0"
+  },
+  "dependencies": {
+    "xlsx": "^0.18.0",
+    "csv-parser": "^3.0.0",
+    "dotenv": "^16.0.0",
+    "winston": "^3.0.0"
+  }
+}
