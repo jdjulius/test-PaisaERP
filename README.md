@@ -1,24 +1,24 @@
-# PaisaERP - Automatización de Pruebas
+# Test-PaisaERP - Automatización de Pruebas Roadmap.sh
 
-Proyecto de automatización de pruebas E2E para PaisaERP utilizando Playwright y TypeScript.
+Proyecto de automatización de pruebas E2E para Roadmap.sh utilizando Playwright y TypeScript, siguiendo las mejores prácticas del Page Object Model (POM).
 
 ## 🚀 Características
 
 - **Framework**: Playwright con TypeScript
-- **Patrón**: Page Object Model (POM)
+- **Patrón**: Page Object Model (POM) - 1 Page = 1 Class = 1 Spec
 - **Ejecución**: Paralela y optimizada
 - **Reportes**: HTML, JSON, JUnit con capturas y videos
-- **Data Providers**: JSON, CSV, Excel
+- **Data Providers**: JSON para datos de prueba
 - **CI/CD**: Integración con GitHub Actions
+- **Seguridad**: 0 vulnerabilities - xlsx dependency removed
 
 ## 📋 Módulos Cubiertos
 
-- **Autenticación**: Login, logout, gestión de sesiones
-- **Gestión de Usuarios**: CRUD de usuarios y roles
-- **Contabilidad**: Asientos, balances, reportes
-- **Inventario**: Productos, almacenes, movimientos
-- **Facturación**: Facturas, cotizaciones, pagos
-- **Reportes**: Dashboards, exportaciones, análisis
+- **Home Page**: Navegación y enlaces principales de Roadmap.sh
+- **Data Analyst Page**: Roadmap específico para analistas de datos
+- **Login Page**: Autenticación y gestión de sesiones
+- **Google Search**: Búsquedas especializadas en Google
+- **E2E Flows**: Flujos completos de navegación entre páginas
 
 ## 🛠️ Instalación Rápida
 
@@ -44,6 +44,12 @@ cp .env.example .env
 ```bash
 # Ejecutar todas las pruebas
 npm test
+
+# Ejecutar pruebas específicas
+npm run test:home          # Solo Home Page
+npm run test:data-analyst  # Solo Data Analyst Page  
+npm run test:login         # Solo Login Page
+npm run test:flow          # Solo E2E Flow
 
 # Modo interactivo
 npm run test:ui
@@ -77,9 +83,16 @@ test-PaisaERP/
 ├── tests/
 │   ├── pages/              # Page Object Model
 │   │   ├── BasePage.ts     # Clase base
-│   │   └── LoginPage.ts    # Páginas específicas
+│   │   ├── HomePage.ts     # Página principal Roadmap.sh
+│   │   ├── DataAnalystPage.ts # Página Data Analyst
+│   │   ├── LoginPage.ts    # Página de Login
+│   │   └── GooglePage.ts   # Página de Google Search
 │   ├── specs/              # Archivos de pruebas
-│   │   └── login.spec.ts   # Suites de pruebas
+│   │   ├── home.spec.ts    # Pruebas Home Page
+│   │   ├── data-analyst.spec.ts # Pruebas Data Analyst Page
+│   │   ├── login.spec.ts   # Pruebas Login Page
+│   │   ├── complete-flow.spec.ts # Pruebas E2E Flow
+│   │   └── google-search.spec.ts # Pruebas Google Search
 │   ├── utils/              # Utilidades
 │   │   └── DataProvider.ts # Manejo de datos
 │   ├── data/               # Datos de prueba
@@ -97,7 +110,7 @@ test-PaisaERP/
 
 ```bash
 # URLs por ambiente
-BASE_URL=http://localhost:3000
+BASE_URL=https://roadmap.sh
 DEV_URL=http://localhost:3000
 TEST_URL=http://test.paisaerp.com
 

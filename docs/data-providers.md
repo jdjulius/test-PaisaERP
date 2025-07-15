@@ -60,13 +60,18 @@ María García,maria@example.com,+573007654321,Empresa B
 ### 3. Leer Datos Excel
 
 ```typescript
-// Leer primera hoja
-const inventory = await DataProvider.readExcelData('inventory.xlsx');
+// NOTA: Soporte para Excel removido por vulnerabilidades de seguridad
+// Usar archivos CSV como alternativa
 
-// Leer hoja específica
-const sales = await DataProvider.readExcelData('reports.xlsx', 'Sales');
+// Ejemplo con CSV:
+const inventory = await DataProvider.readCSVData('inventory.csv');
+const sales = await DataProvider.readCSVData('sales.csv');
 
-// Estructura esperada del Excel:
+// Para convertir Excel a CSV:
+// 1. Abrir archivo .xlsx en Excel
+// 2. Guardar como > CSV (delimitado por comas)
+// 3. Usar readCSVData() en lugar de readExcelData()
+```
 /*
 | Product | Price | Stock | Category |
 |---------|-------|-------|----------|
@@ -190,11 +195,11 @@ test('Process customer data', async ({ page }) => {
 });
 ```
 
-### Test con Datos Excel
+### Test con Datos CSV
 
 ```typescript
 test('Update inventory', async ({ page }) => {
-  const inventory = await DataProvider.readExcelData('inventory.xlsx');
+  const inventory = await DataProvider.readCSVData('inventory.csv');
   
   for (const item of inventory) {
     await inventoryPage.updateProduct(item.Product, {

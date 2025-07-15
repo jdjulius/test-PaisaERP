@@ -1,11 +1,10 @@
 import { readFileSync, existsSync, createReadStream, mkdirSync, writeFileSync } from 'fs';
 import { join } from 'path';
-import * as XLSX from 'xlsx';
 import csvParser from 'csv-parser';
 
 /**
  * Utilidad para manejo de datos de prueba
- * Soporte para JSON, CSV y Excel
+ * Soporte para JSON y CSV
  */
 export class DataProvider {
   private static readonly DATA_DIR = join(process.cwd(), 'tests', 'data');
@@ -47,29 +46,6 @@ export class DataProvider {
         .on('end', () => resolve(results))
         .on('error', (error) => reject(error));
     });
-  }
-
-  /**
-   * Leer datos desde archivo Excel
-   * @param filename - Nombre del archivo Excel
-   * @param sheetName - Nombre de la hoja (opcional, usa la primera por defecto)
-   * @returns Array de datos
-   */
-  static async readExcelData(filename: string, sheetName?: string): Promise<any[]> {
-    const filePath = join(this.DATA_DIR, filename);
-    
-    if (!existsSync(filePath)) {
-      throw new Error(`Archivo no encontrado: ${filePath}`);
-    }
-
-    const workbook = XLSX.readFile(filePath);
-    const sheet = sheetName || workbook.SheetNames[0];
-    
-    if (!sheet || !workbook.Sheets[sheet]) {
-      throw new Error(`Hoja no encontrada: ${sheet}`);
-    }
-
-    return XLSX.utils.sheet_to_json(workbook.Sheets[sheet]);
   }
 
   /**

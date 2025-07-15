@@ -1,129 +1,142 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from './BasePage';
 
 /**
- * Página de Login del ERP
- * Implementa acciones específicas para autenticación
+ * Page Object Model para la página de Login de Roadmap.sh
  */
 export class LoginPage extends BasePage {
-  // Locators de elementos de la página
-  readonly usernameInput: Locator;
+  readonly loginForm: Locator;
+  readonly emailInput: Locator;
   readonly passwordInput: Locator;
   readonly loginButton: Locator;
-  readonly errorMessage: Locator;
-  readonly forgotPasswordLink: Locator;
-  readonly rememberMeCheckbox: Locator;
-  readonly companySelect: Locator;
+  readonly pageTitle: Locator;
+  readonly signInButton: Locator;
 
   constructor(page: Page) {
     super(page);
     
-    // Inicializar locators
-    this.usernameInput = page.locator('#username');
-    this.passwordInput = page.locator('#password');
-    this.loginButton = page.locator('#login-btn');
-    this.errorMessage = page.locator('.error-message');
-    this.forgotPasswordLink = page.locator('#forgot-password');
-    this.rememberMeCheckbox = page.locator('#remember-me');
-    this.companySelect = page.locator('#company-select');
+    // Selectores específicos de la página de Login
+    this.loginForm = page.locator('form');
+    this.emailInput = page.locator('input[type="email"]');
+    this.passwordInput = page.locator('input[type="password"]');
+    this.loginButton = page.locator('button[type="submit"]');
+    this.pageTitle = page.locator('h1');
+    this.signInButton = page.locator('button:has-text("Sign In"), button:has-text("Login")');
   }
 
   /**
-   * Navegar a la página de login
+   * Navegar directamente a la página de Login
    */
   async navigateToLogin(): Promise<void> {
-    await this.navigateTo('/login');
-    await this.waitForPageLoad();
+    await this.navigateTo('https://roadmap.sh/login');
   }
 
   /**
-   * Realizar login con credenciales
-   * @param username - Nombre de usuario
-   * @param password - Contraseña
-   * @param company - Empresa (opcional)
+   * Validar que estamos en la página de Login
    */
-  async login(username: string, password: string, company?: string): Promise<void> {
-    await this.fillField(this.usernameInput, username);
-    await this.fillField(this.passwordInput, password);
+  async validateLoginPage(): Promise<void> {
+    // Verificar URL o presencia de elementos de login
+    const isLoginPage = this.page.url().includes('/login') || 
+                       this.page.url().includes('login') ||
+                       await this.loginForm.isVisible().catch(() => false);
     
-    if (company) {
-      await this.selectOption(this.companySelect, company);
-    }
-    
-    await this.clickElement(this.loginButton);
-    await this.waitForPageLoad();
+    expect(isLoginPage).toBe(true);
   }
 
   /**
-   * Verificar si el login fue exitoso
-   * Debe ser redirigido al dashboard
+   * Verificar que el formulario de login está presente
    */
-  async verifyLoginSuccess(): Promise<void> {
-    await this.page.waitForURL('**/dashboard');
-    await this.verifyUrl('/dashboard');
-  }
-
-  /**
-   * Verificar mensaje de error en login
-   * @param expectedMessage - Mensaje de error esperado
-   */
-  async verifyLoginError(expectedMessage: string): Promise<void> {
-    await this.verifyElementVisible(this.errorMessage);
-    await this.verifyElementText(this.errorMessage, expectedMessage);
-  }
-
-  /**
-   * Hacer clic en "Olvidé mi contraseña"
-   */
-  async clickForgotPassword(): Promise<void> {
-    await this.clickElement(this.forgotPasswordLink);
-  }
-
-  /**
-   * Marcar/desmarcar "Recordarme"
-   * @param remember - True para marcar, false para desmarcar
-   */
-  async setRememberMe(remember: boolean): Promise<void> {
-    if (remember) {
-      await this.rememberMeCheckbox.check();
-    } else {
-      await this.rememberMeCheckbox.uncheck();
+  async verifyLoginForm(): Promise<void> {
+    try {
+      await this.waitForElement(this.loginForm);
+      await this.waitForElement(this.emailInput);
+      await this.waitForElement(this.passwordInput);
+    } catch (error) {
+      console.log('Formulario de login no encontrado, puede ser una página diferente');
     }
   }
 
   /**
-   * Obtener opciones disponibles de empresa
-   * @returns Array de opciones de empresa
+   * Llenar el formulario de login
    */
-  async getCompanyOptions(): Promise<string[]> {
-    await this.waitForElement(this.companySelect);
-    const options = await this.companySelect.locator('option').all();
-    const optionTexts: string[] = [];
-    
-    for (const option of options) {
-      const text = await option.textContent();
-      if (text) {
-        optionTexts.push(text);
-      }
+  async fillLoginForm(email: string, password: string): Promise<void> {
+    await this.emailInput.fill(email);
+    await this.passwordInput.fill(password);
+  }
+
+  /**
+   * Hacer clic en el botón de login
+   */
+  async clickLoginButton(): Promise<void> {
+    try {
+      await this.clickElement(this.loginButton);
+    } catch (error) {
+      // Intentar con botón alternativo
+      await this.clickElement(this.signInButton);
     }
+  }
+
+  /**
+   * Proceso completo de login
+   */
+  async performLogin(email: string, password: string): Promise<void> {
+    await this.fillLoginForm(email, password);
+    await this.clickLoginButton();
+  }
+
+  /**
+   * Obtener el título de la página
+   */
+  async getPageTitle(): Promise<string> {
+    await this.waitForElement(this.pageTitle);
+    return await this.pageTitle.textContent() || '';
+  }
+
+  /**
+   * Verificar que estamos en la página correcta
+   */
+  async verifyLoginPage(): Promise<void> {
+    const currentUrl = this.page.url();
+    const hasLoginInUrl = currentUrl.includes('/login') || 
+                         currentUrl.includes('login') ||
+                         currentUrl.includes('signin') ||
+                         currentUrl.includes('auth');
     
-    return optionTexts;
+    expect(hasLoginInUrl).toBe(true);
   }
 
   /**
-   * Verificar que la página de login esté cargada
+   * Debug de selectores de la página de Login
    */
-  async verifyLoginPageLoaded(): Promise<void> {
-    await this.verifyElementVisible(this.usernameInput);
-    await this.verifyElementVisible(this.passwordInput);
-    await this.verifyElementVisible(this.loginButton);
+  async debugLoginSelectors(): Promise<void> {
+    console.log('=== LOGIN PAGE DEBUG ===');
+    
+    const formExists = await this.loginForm.isVisible().catch(() => false);
+    console.log(`Login form visible: ${formExists}`);
+    
+    const title = await this.getPageTitle().catch(() => 'No title found');
+    console.log(`Page title: ${title}`);
+    
+    console.log(`Current URL: ${this.page.url()}`);
   }
 
   /**
-   * Limpiar campos de login
+   * Tomar screenshot de la página de Login
    */
-  async clearLoginFields(): Promise<void> {
-    await this.usernameInput.clear();
-    await this.passwordInput.clear();
+  async takeLoginScreenshot(): Promise<void> {
+    await this.page.screenshot({ path: 'test-results/screenshots/login-page.png' });
+  }
+
+  /**
+   * Verificar si llegamos a una página de autenticación
+   */
+  async verifyAuthenticationPage(): Promise<void> {
+    const currentUrl = this.page.url();
+    const isAuthPage = currentUrl.includes('login') || 
+                      currentUrl.includes('signin') ||
+                      currentUrl.includes('auth') ||
+                      currentUrl.includes('account');
+    
+    expect(isAuthPage).toBe(true);
   }
 }

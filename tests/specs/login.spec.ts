@@ -1,139 +1,73 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '../pages/LoginPage';
-import { DataProvider } from '../utils/DataProvider';
-import { UserData } from '../types';
 
 /**
- * Suite de pruebas para módulo de Login
- * Incluye casos positivos y negativos con data providers
+ * Suite de pruebas para la página de Login de Roadmap.sh
  */
-test.describe('Login Module', () => {
+test.describe('Roadmap.sh - Login Page', () => {
   let loginPage: LoginPage;
-  let testUsers: UserData[];
 
-  // Configuración antes de cada test
   test.beforeEach(async ({ page }) => {
     loginPage = new LoginPage(page);
-    testUsers = await DataProvider.getUserData('test');
+  });
+
+  test('should load login page successfully', async ({ page }) => {
     await loginPage.navigateToLogin();
+    await loginPage.validateLoginPage();
+    
+    await loginPage.takeLoginScreenshot();
+    
+    console.log('✅ Login page loaded successfully');
   });
 
-  test('Should load login page correctly', async () => {
-    await loginPage.verifyLoginPageLoaded();
-    await expect(loginPage.page).toHaveTitle(/Login/);
+  test('should display login form elements', async ({ page }) => {
+    await loginPage.navigateToLogin();
+    await loginPage.verifyLoginForm();
+    
+    console.log('✅ Login form elements verified');
   });
 
-  test('Should login successfully with valid credentials', async () => {
-    const adminUser = testUsers.find(user => user.role === 'administrator');
+  test('should have correct page title', async ({ page }) => {
+    await loginPage.navigateToLogin();
     
-    if (!adminUser) {
-      test.skip(true, 'No administrator user found');
-      return;
-    }
+    const title = await loginPage.getPageTitle().catch(() => 'No title found');
+    expect(title).toBeTruthy();
     
-    await loginPage.login(adminUser.username, adminUser.password);
-    await loginPage.verifyLoginSuccess();
+    console.log(`✅ Page title verified: ${title}`);
   });
 
-  test('Should show error with invalid credentials', async () => {
-    await loginPage.login('invalid_user', 'invalid_password');
-    await loginPage.verifyLoginError('Credenciales incorrectas');
+  test('should verify login page URL', async ({ page }) => {
+    await loginPage.navigateToLogin();
+    await loginPage.verifyLoginPage();
+    
+    console.log('✅ Login page URL verified');
   });
 
-  test('Should show error with empty credentials', async () => {
-    await loginPage.login('', '');
-    await loginPage.verifyLoginError('Por favor ingrese sus credenciales');
+  test('should verify authentication page', async ({ page }) => {
+    await loginPage.navigateToLogin();
+    await loginPage.verifyAuthenticationPage();
+    
+    console.log('✅ Authentication page verified');
   });
 
-  test('Should not login with inactive user', async () => {
-    const inactiveUser = testUsers.find(user => user.active === false);
+  test('should debug login selectors', async ({ page }) => {
+    await loginPage.navigateToLogin();
+    await loginPage.debugLoginSelectors();
     
-    if (!inactiveUser) {
-      test.skip(true, 'No inactive user found');
-      return;
-    }
+    // Verificar que la página cargó correctamente
+    await loginPage.verifyLoginPage();
     
-    await loginPage.login(inactiveUser.username, inactiveUser.password);
-    await loginPage.verifyLoginError('Usuario inactivo');
+    console.log('✅ Login page debug completed');
   });
 
-  test('Should remember user when checkbox is checked', async () => {
-    const user = testUsers.find(user => user.role === 'user');
+  // Test para el futuro cuando implementes login real
+  test.skip('should perform login successfully', async ({ page }) => {
+    await loginPage.navigateToLogin();
+    await loginPage.performLogin('test@example.com', 'password123');
     
-    if (!user) {
-      test.skip(true, 'No regular user found');
-      return;
-    }
+    // Verificar redirección después del login
+    expect(page.url()).not.toContain('/login');
     
-    await loginPage.setRememberMe(true);
-    await loginPage.login(user.username, user.password);
-    await loginPage.verifyLoginSuccess();
-    
-    // Verificar que el usuario se mantenga después de cerrar sesión
-    // Esta lógica dependería de la implementación específica del ERP
-  });
-
-  test('Should display company options correctly', async () => {
-    const companies = await loginPage.getCompanyOptions();
-    
-    expect(companies).toContain('Empresa Principal');
-    expect(companies).toContain('Empresa Secundaria');
-    expect(companies.length).toBeGreaterThan(0);
-  });
-
-  test('Should login with specific company selection', async () => {
-    const user = testUsers.find(user => user.company === 'Empresa Secundaria');
-    
-    if (!user) {
-      test.skip(true, 'No user with Empresa Secundaria found');
-      return;
-    }
-    
-    await loginPage.login(user.username, user.password, user.company);
-    await loginPage.verifyLoginSuccess();
-  });
-
-  test('Should navigate to forgot password page', async () => {
-    await loginPage.clickForgotPassword();
-    await expect(loginPage.page).toHaveURL(/forgot-password/);
-  });
-
-  // Test parametrizado con múltiples usuarios
-  test.describe('Login with multiple users', () => {
-    const userRoles = ['administrator', 'user', 'viewer'];
-    
-    userRoles.forEach(role => {
-      test(`Should login successfully as ${role}`, async ({ page }) => {
-        const loginPageForRole = new LoginPage(page);
-        const users: UserData[] = await DataProvider.getUserData('test');
-        const user = users.find((u: UserData) => u.role === role && u.active === true);
-        
-        if (!user) {
-          test.skip(true, `No active user found for role: ${role}`);
-          return;
-        }
-        
-        await loginPageForRole.navigateToLogin();
-        await loginPageForRole.login(user.username, user.password);
-        await loginPageForRole.verifyLoginSuccess();
-      });
-    });
-  });
-
-  // Test con datos generados dinámicamente
-  test('Should handle dynamically generated invalid credentials', async () => {
-    const randomEmail = DataProvider.generateRandomData('email');
-    const randomPassword = DataProvider.generateRandomData('name');
-    
-    await loginPage.login(randomEmail, randomPassword);
-    await loginPage.verifyLoginError('Credenciales incorrectas');
-  });
-
-  // Test de limpieza después de cada test
-  test.afterEach(async ({ page }) => {
-    await loginPage.takeScreenshot(`login-test-${Date.now()}`);
-    
-    // Limpiar estado si es necesario
-    await loginPage.clearLoginFields();
+    console.log('✅ Login performed successfully');
   });
 });

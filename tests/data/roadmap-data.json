@@ -1,0 +1,51 @@
+{
+  "urls": {
+    "base": "https://roadmap.sh/",
+    "dataAnalyst": "https://roadmap.sh/data-analyst"
+  },
+  "expectedTexts": {
+    "title": "Data Analyst Roadmap",
+    "titleVariations": [
+      "Data Analyst Roadmap",
+      "Data Analyst",
+      "roadmap"
+    ]
+  },
+  "selectors": {
+    "dataAnalystLink": "a[href='/data-analyst']",
+    "loginButton": "button:has-text('Login'), a:has-text('Login'), [data-testid='login-button']",
+    "alternativeSelectors": [
+      "text='Data Analyst'",
+      "[data-testid='data-analyst-link']",
+      "text='Data Analyst Roadmap'"
+    ],
+    "loginAlternativeSelectors": [
+      "text='Login'",
+      "a[href*='login']",
+      "button[type='submit']:has-text('Login')",
+      "[data-testid='login-btn']"
+    ],
+    "titleSelectors": [
+      "h1",
+      "[data-testid='roadmap-title']",
+      ".roadmap-title"
+    ]
+  },
+  "testData": {
+    "timeouts": {
+      "navigation": 10000,
+      "element": 5000,
+      "page": 15000
+    },
+    "retryCount": 3,
+    "screenshots": {
+      "home": "test-results/screenshots/roadmap-home.png",
+      "dataAnalyst": "test-results/screenshots/data-analyst-page.png",
+      "afterLogin": "test-results/screenshots/after-login-click.png"
+    },
+    "expectedResults": {
+      "loginRedirect": "Should redirect to login page or show login form",
+      "loginPageTitle": "May contain 'Login', 'Sign In', or 'Authentication'"
+    }
+  }
+}
