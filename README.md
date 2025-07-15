@@ -49,7 +49,13 @@ npm test
 npm run test:home          # Solo Home Page
 npm run test:data-analyst  # Solo Data Analyst Page  
 npm run test:login         # Solo Login Page
-npm run test:flow          # Solo E2E Flow
+
+# Ejecutar flows E2E
+npm run test:flows         # Todos los flows
+npm run test:flow          # Flow principal completo
+npm run test:flow:quick    # Flow de navegación rápida
+npm run test:flow:visual   # Flow de validación visual
+npm run test:flow:error    # Flow de manejo de errores
 
 # Modo interactivo
 npm run test:ui

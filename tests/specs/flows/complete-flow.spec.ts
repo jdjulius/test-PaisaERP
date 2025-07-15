@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
-import { HomePage } from '../pages/HomePage';
-import { DataAnalystPage } from '../pages/DataAnalystPage';
-import { LoginPage } from '../pages/LoginPage';
+import { HomePage } from '../../pages/HomePage';
+import { DataAnalystPage } from '../../pages/DataAnalystPage';
+import { LoginPage } from '../../pages/LoginPage';
 
 /**
  * Suite de pruebas E2E para el flujo completo de navegación
